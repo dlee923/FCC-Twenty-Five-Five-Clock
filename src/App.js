@@ -5,34 +5,40 @@ import { faArrowDown, faArrowUp, faPlay, faPause, faRefresh } from '@fortawesome
 
 const title = <h1 className="title">25 + 5 Clock</h1>
 
-const OptionContainer = ({title, optionValue}) => {
+const OptionContainer = ({title, optionValue, decreaseFx, increaseFx}) => {
   return (
     <div className="option-container">
       <p className="option-container-title">{title}</p>
       <div className="option-container-selector">
-        <FontAwesomeIcon icon={faArrowDown} />
+        <button className="option-container-selector-button" onClick={decreaseFx}><FontAwesomeIcon icon={faArrowDown} /></button>
         <p className="option-value">{optionValue}</p>      
-        <FontAwesomeIcon icon={faArrowUp} />
+        <button className="option-container-selector-button" onClick={increaseFx}><FontAwesomeIcon icon={faArrowUp} /></button>
       </div>      
     </div>  
   );
 }
 
-function SessionContainer({time}) {
+function SessionContainer({minutes, seconds}) {
   return (
     <div className="session-container">
       <p className="session-container-title">Session</p>
-      <p className="session-container-value">{time}</p>
+      <p className="session-container-value">{minutes}:{seconds}</p>
     </div>
   );
 }
 
-const SessionControlRow = () => {
+const SessionControlRow = ({playFx, pauseFx, resetFx}) => {
   return (
     <div className="session-control-row">
-      <FontAwesomeIcon icon={faPlay} />
-      <FontAwesomeIcon icon={faPause} />
-      <FontAwesomeIcon icon={faRefresh} />
+      <button className="session-control-row-btn" onClick={playFx}>
+        <FontAwesomeIcon icon={faPlay} />
+      </button>
+      <button className="session-control-row-btn" onClick={pauseFx}>
+        <FontAwesomeIcon icon={faPause} />
+      </button>
+      <button className="session-control-row-btn" onClick={resetFx}>
+        <FontAwesomeIcon icon={faRefresh} />
+      </button>
     </div>    
   );
 }
@@ -50,33 +56,105 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      breakLength: 0,
-      sessionLength: 0,
-      session: 0
+      breakLength: 5,
+      sessionLength: 25,
+      timeRemaining: 1500, // 60s * 25m
+      minutesRemaining: 25,
+      secondsRemaining: "00"
     }
-    this.decrease = this.decrease.bind(this);
-    this.increase = this.increase.bind(this);
-    this.play = this.play.bind(this);
-    this.reset = this.reset.bind(this);
   }
 
-  decrease() {}
-  increase() {}
-  play() {}
-  pause() {}
-  reset() {}
+  decreaseBreak = () => {
+    console.log("decrease break");
+    this.setState({
+      breakLength: this.state.breakLength - 1 < 0 ? 0 : this.state.breakLength - 1
+    });
+  }
+
+  increaseBreak = () => {
+    console.log("increase break")    
+    this.setState({
+      breakLength: this.state.breakLength + 1 > 60 ? 60 : this.state.breakLength + 1
+    });    
+  }
+
+  decreaseSession = () => {
+    console.log("decrease session");
+    this.setTimerValue(this.state.sessionLength - 1 < 0 ? 0 : this.state.sessionLength - 1, "00");
+    this.setState({
+      sessionLength: this.state.sessionLength - 1 < 0 ? 0 : this.state.sessionLength - 1
+    });
+  }
+
+  increaseSession =() => {
+    console.log("increase session")
+    this.setTimerValue(this.state.sessionLength + 1 > 60 ? 60 : this.state.sessionLength + 1, "00");
+    this.setState({
+      sessionLength: this.state.sessionLength + 1 > 60 ? 60 : this.state.sessionLength + 1,
+    });
+  }
+
+  setTimerValue = (minutes, seconds) => {
+    console.log("set timer")
+    this.setState({
+      minutesRemaining: minutes,
+      secondsRemaining: seconds
+    });
+  }
+
+  play = () => {
+    console.log("play");
+    setInterval(this.updateTimeRemaining, 1000);
+  }
+
+  pause = () => {
+    console.log("pause");
+    clearInterval();
+  }
+
+  reset = () => {
+    console.log("reset")
+    this.setState({
+      breakLength: 5,
+      sessionLength: 25,
+      timeRemaining: 1500, // 60s * 25m
+      minutesRemaining: 25,
+      secondsRemaining: "00"
+    });
+  }
+
+  updateTimeRemaining = () => {
+    console.log("update time remaining")
+    const timeRemaining = this.state.timeRemaining - 1;
+    const minutesRemaining = parseInt((this.state.timeRemaining - 1) / 60);
+    const secondsRemaining = (this.state.timeRemaining - 1) % 60;
+    this.setTimerValue(minutesRemaining, secondsRemaining < 10 ? "0" + secondsRemaining : secondsRemaining)
+    this.setState({
+      timeRemaining: timeRemaining,
+    });
+  }
 
   render() {
     return (
       <div className="App">
         {title}        
         <div className="option-container-group">
-          <OptionContainer title="Break Length" optionValue="5" />
+          <OptionContainer 
+            title="Break Length" 
+            optionValue={this.state.breakLength} 
+            decreaseFx={this.decreaseBreak}
+            increaseFx={this.increaseBreak}
+          />
           <span style={{width: "70px"}}></span>
-          <OptionContainer title="Session Length" optionValue="25" />
+          <OptionContainer 
+            title="Session Length" 
+            optionValue={this.state.sessionLength} 
+            decreaseFx={this.decreaseSession} 
+            increaseFx={this.increaseSession}
+          />
         </div>        
-        <SessionContainer time="25:00" />
-        <SessionControlRow />
+        <SessionContainer minutes={this.state.minutesRemaining} seconds={this.state.secondsRemaining}/>
+        <SessionControlRow playFx={this.play} pauseFx={this.pause} resetFx={this.reset}/>
         <Signature />
       </div>
     );
