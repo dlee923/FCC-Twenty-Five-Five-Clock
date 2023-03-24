@@ -1,6 +1,7 @@
 :root {
   --background-color: #1e555c;
   --button-hover-color: Aquamarine;
+  --timer-color: white;
 }
 
 * {
@@ -63,6 +64,8 @@ button:hover {
   padding: 15px 50px;
   border: 7px solid rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
+  color: var(--timer-color);
+  min-width: 200px;;
 }
 
 .session-container-title {
@@ -70,7 +73,7 @@ button:hover {
 }
 
 .session-container-value {
-  font-size: 85px;
+  font-size: 85px;  
 }
 
 .session-control-row {
