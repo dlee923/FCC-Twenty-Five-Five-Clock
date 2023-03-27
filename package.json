@@ -2,7 +2,7 @@
   "name": "twenty-five-five-clock",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://dlee923.github.io/fcc-twenty-five-five-clock",
+  "homepage": "https://dlee923.github.io/FCC-Twenty-Five-Five-Clock",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-regular-svg-icons": "^6.3.0",
