@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/fcc-twenty-five-five-clock/static/css/main.3231fb9d.css",
+    "main.js": "/fcc-twenty-five-five-clock/static/js/main.649c5a07.js",
+    "static/js/787.82392e52.chunk.js": "/fcc-twenty-five-five-clock/static/js/787.82392e52.chunk.js",
+    "index.html": "/fcc-twenty-five-five-clock/index.html",
+    "main.3231fb9d.css.map": "/fcc-twenty-five-five-clock/static/css/main.3231fb9d.css.map",
+    "main.649c5a07.js.map": "/fcc-twenty-five-five-clock/static/js/main.649c5a07.js.map",
+    "787.82392e52.chunk.js.map": "/fcc-twenty-five-five-clock/static/js/787.82392e52.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3231fb9d.css",
+    "static/js/main.649c5a07.js"
+  ]
+}
